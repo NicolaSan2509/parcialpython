@@ -15,7 +15,7 @@ def cargar_matriz_edades(n,m):
      mayores a 0 en la matriz
     """
 
-    matriz_edades = []
+    matriz_edades = []  
 
     print("Advertencia, ingrese edades validas (numeros mayores de 0) Por favor")
 
@@ -81,10 +81,68 @@ def porcentaje_mayores(matriz_generada):
         return porcentaje
 
 
+#=======================================================================
+#=======================================================================
 
-        
+def menor_edad(matriz_edades):
+    """
+    Determina la edad mínima de toda la matriz sin usar la función min()
+    y retorna ese valor junto con todas las posiciones (fila, columna) donde aparece.
+    """
+    if not matriz_edades or not matriz_edades[0]:   # Verifica si la matriz está vacía o si la primera fila está vacía
+        return [] # Retorna una lista vacía si la matriz está vacía o si la primera fila está vacía
+
+    edad_minima_encontrada = 0      # Un valor que sabemos que será superado por cualquier edad válida
+    posiciones_menor_edad = []      # Lista para almacenar las posiciones de la menor edad encontrada
+
+    # Bandera para saber si ya hicimos la inicializacion de la edad mínima
+    encontrado_primer_valor = False
 
 
+    # Bucle exterior para recorrer las filas de la matriz.
+    # 'i' representa el índice de la fila actual empezando en 0
+    for i in range(len(matriz_edades)):             # Recorre las filas
+        # Bucle interior para recorrer las columnas de la fila actual.
+        # 'j' representa el índice de la columna actual empezando en 0
+        # Recorremos cada fila y columna de la matriz
+        for j in range(len(matriz_edades[i])):      # Recorre las columnas de la fila actual
+            edad_actual = matriz_edades[i][j]       # Obtenemos la edad actual en la posición [i][j]
 
+            if not encontrado_primer_valor:                         # Si es el primer valor que encontramos
+                edad_minima_encontrada = edad_actual                # inicializamos la edad mínima con el primer valor encontrado
+                posiciones_menor_edad.append([i + 1, j + 1])        # guardamos la posición como lista [fila, columna]
+                encontrado_primer_valor = True                      # marcamos que encontramos el primer valor
 
+            elif edad_actual < edad_minima_encontrada:          # Si encontramos una edad menor
+                edad_minima_encontrada = edad_actual            # Actualizamos la edad mínima encontrada
+                # aca reiniciamos la lista de posiciones porque encontramos una nueva edad mínima
+                posiciones_menor_edad = [[i + 1, j + 1]]        # Reiniciamos la lista con la nueva posición
+                
+            elif edad_actual == edad_minima_encontrada:         # Si encontramos una edad igual a la mínima actual
+                posiciones_menor_edad.append([i + 1, j + 1])    # Agregamos la posición a la lista
 
+            else:
+                continue # Si la edad actual es mayor, no hacemos nada
+
+    return edad_minima_encontrada, posiciones_menor_edad
+    
+
+def buscar_edad(matriz_edades, edad_buscada):
+    """
+    Recibe una matriz y una edad determinada, y retorna todas las posiciones
+    (fila, columna) donde aparece esa edad exacta.
+    """
+    posiciones_encontradas = []     # Lista para almacenar las posiciones donde se encuentra la edad buscada
+
+    # Recorremos la matriz completa
+    for i in range(len(matriz_edades)): # Iteramos sobre las filas
+        for j in range(len(matriz_edades[i])): # Iteramos sobre las columnas de cada fila
+
+            # Verificamos si la edad en la posición actual es igual a la edad buscada
+            if matriz_edades[i][j] == edad_buscada:     # Comparación directa de la edad en la matriz con la edad buscada
+                # Si la edad en la posición actual coincide con la edad buscada
+                # Agregamos la posición (fila, columna) a la lista
+                # Sumamos 1 a i y j para que las posiciones para el usuario no vea desde 0 y empiecen en 1
+                posiciones_encontradas.append([i + 1, j + 1])
+    
+    return posiciones_encontradas

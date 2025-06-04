@@ -7,6 +7,8 @@ def mostrar_menu():
     print("### Menu Principal ###")
     print("Opcion 1. Vas a Cargar las edades")
     print("Opcion 2. Vas a Calcular el porcentaje de personas mayores a 60")
+    print("Opcion 3. Vas a Encontrar la menor edad y sus posiciones")
+    print("Opcion 4. Vas a Buscar una edad especifica") 
     print("Opcion 0. Salir del Programa")
 
 
@@ -67,6 +69,61 @@ while True:
                 print(f"El porcentaje de personas mayores de 60 es de {porcentaje_mayores_60} % ")
             else:
                 print("!!!!! Error Primero tenes que cargas las edades en la opcion 1 !!!!!")
+        
+        case "3":
+            print("Has elegido 3: Encontrar la menor edad y sus posiciones")
+            if matriz_poblacion and len(matriz_poblacion) > 0 and len(matriz_poblacion[0]) > 0:
+
+                # modificamos la llamada a la función menor_edad
+                resultado_menor_edad = funciones.menor_edad(matriz_poblacion)
+                
+                # Accedemos a los elementos individualmente desde la variable resultado_menor_edad
+                # El primer elemento es la edad mínima, el segundo es la lista de posiciones
+                edad_minima_encontrada = resultado_menor_edad[0] 
+                lista_posiciones = resultado_menor_edad[1]
+
+                if edad_minima_encontrada is not None: # Verificamos si se encontró una edad mínima y no es none 
+                    print(f"La edad mínima encontrada es: {edad_minima_encontrada}")
+                    print("Aparece en las siguientes posiciones (fila, columna):")
+                    for pos in lista_posiciones:    # Recorremos la lista de posiciones
+                        print(f"  - Fila: {pos[0]}, Columna: {pos[1]}")     # Mostramos cada posición encontrada
+                else:
+                    print("No se pudo determinar la edad mínima. La matriz está vacía.")
+            else:
+                print("!!!!! Error: Primero tenes que cargar las edades en la opcion 1 !!!!!")
+
+        case "4": # Nuevo case para la función buscar_edad()
+            print("Has elegido 4: Buscar una edad especifica")
+
+            if matriz_poblacion and len(matriz_poblacion) > 0 and len(matriz_poblacion[0]) > 0:  # Verificamos que la matriz no esté vacía
+
+                while True: # Bucle para validar la edad a buscar
+
+                    # Pedimos al usuario que ingrese la edad a buscar
+                    edad_busqueda = input("Ingrese la edad que desea buscar: ")
+                    
+                    if validaciones.es_numero_entero(edad_busqueda):    # Verificamos si la entrada es un número entero
+                        # convetimos la entrada a entero y verificamos que sea mayor a 0
+                        edad_a_buscar = int(edad_busqueda)
+                        if edad_a_buscar > 0:
+                            break # Salimos del bucle si la edad es válida
+                        else:
+                            print("Error: La edad a buscar debe ser un número entero y mayor a 0.")
+                    else:
+                        print("Error: Ingrese un número entero válido para la edad.")
+
+                posiciones_encontradas = funciones.buscar_edad(matriz_poblacion, edad_a_buscar)
+
+                if posiciones_encontradas: # Si la lista no está vacía, se encontró la edad
+                    print(f"La edad {edad_a_buscar} se encontró en las siguientes posiciones (fila, columna):")
+                    for i in posiciones_encontradas:
+                        print(f"-- Fila: {i[0]}, Columna: {i[1]}-- ")  # Mostramos cada posición encontrada
+                else:
+                    print(f"La edad {edad_a_buscar} no se encontró en la matriz.")
+            else:
+                print("!!!!! Error: Primero tenes que cargar las edades en la opcion 1 para buscar !!!!!")
+            
+
 
         case "0":
             print("Gracias vuelvas prontos")
